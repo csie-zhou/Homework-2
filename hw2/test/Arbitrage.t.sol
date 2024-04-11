@@ -6,7 +6,11 @@ import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {ISwapV2Router02} from "../src/Arbitrage.sol";
 
 contract Token is ERC20 {
-    constructor(string memory name, string memory symbol, uint256 initialMint) ERC20(name, symbol) {
+    constructor(
+        string memory name,
+        string memory symbol,
+        uint256 initialMint
+    ) ERC20(name, symbol) {
         _mint(msg.sender, initialMint);
     }
 }
@@ -19,9 +23,15 @@ contract Arbitrage is Test {
     Token tokenE;
     address owner = makeAddr("owner");
     address arbitrager = makeAddr("arbitrageMan");
-    ISwapV2Router02 router = ISwapV2Router02(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);
+    ISwapV2Router02 router =
+        ISwapV2Router02(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);
 
-    function _addLiquidity(address token0, address token1, uint256 token0Amount, uint256 token1Amount) internal {
+    function _addLiquidity(
+        address token0,
+        address token1,
+        uint256 token0Amount,
+        uint256 token1Amount
+    ) internal {
         router.addLiquidity(
             token0,
             token1,
@@ -79,6 +89,56 @@ contract Arbitrage is Test {
         /**
          * Please add your solution below
          */
+        // Swap 5 tokenB for tokenA
+        address[] memory path1 = new address[](2);
+        path1[0] = address(tokenB);
+        path1[1] = address(tokenA);
+        router.swapExactTokensForTokens(
+            5 ether,
+            0,
+            path1,
+            arbitrager,
+            block.timestamp
+        );
+
+        // Swap tokenA for tokenD
+        uint256 tokenABalance = tokenA.balanceOf(arbitrager);
+        address[] memory path2 = new address[](2);
+        path2[0] = address(tokenA);
+        path2[1] = address(tokenD);
+        router.swapExactTokensForTokens(
+            tokenABalance,
+            0,
+            path2,
+            arbitrager,
+            block.timestamp
+        );
+
+        // Swap tokenD for tokenC
+        uint256 tokenDBalance = tokenD.balanceOf(arbitrager);
+        address[] memory path3 = new address[](2);
+        path3[0] = address(tokenD);
+        path3[1] = address(tokenC);
+        router.swapExactTokensForTokens(
+            tokenDBalance,
+            0,
+            path3,
+            arbitrager,
+            block.timestamp
+        );
+
+        // Swap tokenC for tokenB
+        uint256 tokenCBalance = tokenC.balanceOf(arbitrager);
+        address[] memory path4 = new address[](2);
+        path4[0] = address(tokenC);
+        path4[1] = address(tokenB);
+        router.swapExactTokensForTokens(
+            tokenCBalance,
+            0,
+            path4,
+            arbitrager,
+            block.timestamp
+        );
         /**
          * Please add your solution above
          */
