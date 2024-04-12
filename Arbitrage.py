@@ -115,6 +115,19 @@ edges = {
     ("tokenE", "tokenD"),
 }
 
+liquidity2 = {
+    ("tokenA", "tokenB"): (17, 10),
+    ("tokenA", "tokenC"): (11, 7),
+    ("tokenA", "tokenD"): (15, 9),
+    ("tokenA", "tokenE"): (21, 5),
+    ("tokenB", "tokenC"): (36, 4),
+    ("tokenB", "tokenD"): (13, 6),
+    ("tokenB", "tokenE"): (25, 3),
+    ("tokenC", "tokenD"): (30, 12),
+    ("tokenC", "tokenE"): (10, 8),
+    ("tokenD", "tokenE"): (60, 25),
+}
+
 
 def bonus(liquidity, start_token, initial_balance):
     max_profit = 0
@@ -201,14 +214,16 @@ def bonus(liquidity, start_token, initial_balance):
                     queue.append(
                         (neighbor, new_path, new_balance, new_liquidity, new_visited))
 
-    path_str = "->".join(final_path)
-    print(
-        f"Bonus: path: {path_str}, {start_token} balance={final_balance:.6f}")
-    print("No path found within max length or balance condition.")
+    if max_profit != 0:
+        path_str = "->".join(final_path)
+        print(
+            f"Bonus: path: {path_str}, {start_token} balance={final_balance:.6f}")
+    else:
+        print("No path found within max length or balance condition.")
     return None
 
 
 # Call the BFS function with the liquidity data, starting token, and initial balance
-# bfs_liquidity(liquidity, start_token, initial_balance)
+bfs_liquidity(liquidity, start_token, initial_balance)
 
-bonus(liquidity, start_token, initial_balance)
+bonus(liquidity2, start_token, initial_balance)
