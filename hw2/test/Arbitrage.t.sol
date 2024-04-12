@@ -89,53 +89,16 @@ contract Arbitrage is Test {
         /**
          * Please add your solution below
          */
-        // Swap 5 tokenB for tokenA
-        address[] memory path1 = new address[](2);
-        path1[0] = address(tokenB);
-        path1[1] = address(tokenA);
+        address[] memory path = new address[](5);
+        path[0] = address(tokenB);
+        path[1] = address(tokenA);
+        path[2] = address(tokenD);
+        path[3] = address(tokenC);
+        path[4] = address(tokenB);
         router.swapExactTokensForTokens(
-            5 ether,
+            tokensBefore,
             0,
-            path1,
-            arbitrager,
-            block.timestamp
-        );
-
-        // Swap tokenA for tokenD
-        uint256 tokenABalance = tokenA.balanceOf(arbitrager);
-        address[] memory path2 = new address[](2);
-        path2[0] = address(tokenA);
-        path2[1] = address(tokenD);
-        router.swapExactTokensForTokens(
-            tokenABalance,
-            0,
-            path2,
-            arbitrager,
-            block.timestamp
-        );
-
-        // Swap tokenD for tokenC
-        uint256 tokenDBalance = tokenD.balanceOf(arbitrager);
-        address[] memory path3 = new address[](2);
-        path3[0] = address(tokenD);
-        path3[1] = address(tokenC);
-        router.swapExactTokensForTokens(
-            tokenDBalance,
-            0,
-            path3,
-            arbitrager,
-            block.timestamp
-        );
-
-        // Swap tokenC for tokenB
-        uint256 tokenCBalance = tokenC.balanceOf(arbitrager);
-        address[] memory path4 = new address[](2);
-        path4[0] = address(tokenC);
-        path4[1] = address(tokenB);
-        router.swapExactTokensForTokens(
-            tokenCBalance,
-            0,
-            path4,
+            path,
             arbitrager,
             block.timestamp
         );

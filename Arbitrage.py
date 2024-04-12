@@ -72,7 +72,7 @@ def bfs_liquidity(liquidity, start_token, initial_balance):
                 # if neighbor not in path and len(new_path) <= max_length:
                 if len(new_path) <= max_length:
                     queue.append((neighbor, new_path, new_balance))
-                    # print(new_balance)
+                    print(new_balance)
 
     print("No path found within max length or balance condition.")
     return None
